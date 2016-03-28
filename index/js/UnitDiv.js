@@ -1,35 +1,43 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-
+import _ from 'lodash';
 var StockBox = React.createClass({
   getInitialState: function() {
     return {data: []};
   },
-  loadStocksFromServer: function() {
-        $.ajax({
-        url: this.props.url,
-        dataType: 'json',
-        cache: false,
-        success: function(data) {
-         this.setState({data: data});
-       }.bind(this),
-        error: function(xhr, status, err) {
-         console.error(this.props.url, status, err.toString());
-        }.bind(this)
-      });
-    },
-  componentDidMount: function() {
-    this.loadStocksFromServer();
-    //setInterval(this.loadStocksFromServer, this.props.pollInterval);
-  },
+  // loadStocksFromServer: function() {
+  //       $.ajax({
+  //       url: this.props.url,
+  //       dataType: 'json',
+  //       cache: false,
+  //       success: function(data) {
+  //        this.setState({data: data});
+  //      }.bind(this),
+  //       error: function(xhr, status, err) {
+  //        console.error(this.props.url, status, err.toString());
+  //       }.bind(this)
+  //     });
+  //   },
+  // componentDidMount: function() {
+  //   this.loadStocksFromServer();
+  //   //setInterval(this.loadStocksFromServer, this.props.pollInterval);
+  // },
   handleStockSubmit: function(stock) {
     $.ajax({
-      url: this.props.url,
+      url: "http://localhost:8000/",
       dataType: 'json',
       type: 'POST',
       data: stock,
       success: function(data) {
-        this.setState({data: data});
+        console.log(data);
+        if(data === "Not Found") {
+          alert("Not Found");
+          this.setState({data: this.state.data});
+        }
+        else {
+        this.setState({data: this.state.data.concat(data)});
+      }
+        
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -62,9 +70,9 @@ var StockForm = React.createClass({
     e.preventDefault();
     var sDate = this.state.stockDate.trim();
     var sName = this.state.stockName.trim();
-    if (!sDate|| !sName) {
-      return;
-    }
+    // if (!sDate|| !sName) {
+    //   return;
+    // }
     this.props.onStockSubmit({stockDate: sDate, stockName: sName});
     this.setState({stockDate: '', stockName: ''});
   },
@@ -90,10 +98,20 @@ var StockResult = React.createClass({
 
   render: function() {
 
-    var stockNodes = this.props.data.map(function(sInfo) {
+    // var stockNodes = _.map(sInfo,sInfo=><Stock stockDate={sInfo.stockDate} key={sInfo.id}> {sInfo.stockName}</Stock>)
+
+    var stockNodes = this.props.data.map(function(sInfo,index) {
       return (
-        <Stock stockDate={sInfo.stockDate} key={sInfo.id}>
-          {sInfo.stockName}
+        <Stock 
+        stockDate={sInfo.Date} 
+        stockName={sInfo.stockName}
+        open = {sInfo.Open}
+        close = {sInfo.Close}
+        high = {sInfo.High}
+        low = {sInfo.Low}
+        volume = {sInfo.Volume}
+        key = {index}
+        >
         </Stock>
         );
       });
@@ -111,7 +129,9 @@ var Stock = React.createClass({
   render: function() {
     return (
       <div className="stock">
-            You chose {this.props.children} on the date of {this.props.stockDate}.
+            You chose {this.props.stockName} on the date of {this.props.stockDate}.<br/>
+            High: {this.props.high}, low:{this.props.low}, 
+            open:{this.props.open}, close: {this.props.close}, volume: {this.props.volume}<br/>
       </div>
     );
   }
@@ -119,7 +139,8 @@ var Stock = React.createClass({
 
 
 ReactDOM.render(
-  <StockBox url="http://localhost:3000/data"  />,
+  <StockBox url="http://localhost:8000/"  />,
+
   document.getElementById('main')
  );
 
