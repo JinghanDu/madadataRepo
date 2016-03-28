@@ -1,0 +1,23 @@
+@charset "utf-8";
+body {
+	background-color: black;
+	font-family:  "Arial","Microsoft YaHei","黑体","宋体",sans-serif;;
+	color: white;
+	font-weight: normal;
+}
+header {
+	font-size: 25px;
+	margin-left:16%;
+	margin-bottom:5px;
+	padding-left:5%;
+	width:700px;
+
+}
+h1{
+	margin-left: 10%;
+}
+#main {
+	width:750px;
+	margin-left:16%;
+	background-color:rgba(161, 154, 154,0.5); 
+}

@@ -1,0 +1,3 @@
+ var data = [
+   {id: 1, stockDate: "01/01", stockName: "miBand"},
+ ];
