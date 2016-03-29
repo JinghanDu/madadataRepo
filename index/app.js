@@ -17,10 +17,9 @@ app.get('/', function(req,res) {
 
 app.post('/', function (req, res, next) {
   res.setHeader('Content-Type', 'application/json');
-  var sName = req.body.stockName; 
-  var sDate = req.body.stockDate;
+  var sName = req.body.stockName.toUpperCase(); 
   console.log(sName);
-  var sqlRequest = "SELECT * FROM stockInfo WHERE stockName = '" + sName + "' AND Date = '" + sDate + "' ";
+  var sqlRequest = "SELECT * FROM stockInfo WHERE stockName = '" + sName + "' ";
   db.all(sqlRequest, function(err, result) {
       if (err !== null) {
          next(err);

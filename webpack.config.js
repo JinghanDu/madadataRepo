@@ -1,7 +1,10 @@
 module.exports = {
   context: __dirname + "/index",
   entry: "./js/UnitDiv.js",
-  
+  resolve: {
+    extensions: ["", ".jsx", ".cjsx", ".coffee", ".js"],
+    modulesDirectories: ["js", "node_modules"]
+  },
   module: {
     loaders: [
       {
@@ -14,7 +17,6 @@ module.exports = {
       }
     ]
   },
-
   output: {
     filename: "bundle.js",
     path: __dirname + "/index",
