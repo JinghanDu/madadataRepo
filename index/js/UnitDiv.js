@@ -25,7 +25,12 @@ var StockBox = React.createClass({
 // GE
 // GS
 // HD
-
+  remove_stock(stockName){
+      _.remove(this.state.data,item => item[0].stockName === stockName);
+      this.setState({
+        data:this.state.data
+      });
+  },
   handleStockSubmit: function(stock) {
     $.ajax({
       url: "http://localhost:8000/",
@@ -53,9 +58,10 @@ var StockBox = React.createClass({
   render: function() {
     return (
       <div className="stockBox">
-       <h2>Choose stocks and see the results.</h2>
+      <br/>
+       <h2>Choose Stocks</h2>
         <StockForm onStockSubmit={this.handleStockSubmit}/>
-        <StockResult data={this.state.data} /> 
+        <StockResult remove_stock = {this.remove_stock} data={this.state.data} /> 
       </div>
     );
   }
@@ -72,20 +78,17 @@ var StockForm = React.createClass({
    handleSubmit: function(e) {
     e.preventDefault();
     var sName = this.state.stockName.trim();
-    // if (!sDate|| !sName) {
-    //   return;
-    // }
-    this.props.onStockSubmit({stockName: sName});
+     this.props.onStockSubmit({stockName: sName});
     this.setState({stockName: ''});
   },
 
   render: function() {
     return (
-    <div className="stockForm">
+    <div id="stockForm">
 	    <form onSubmit = {this.handleSubmit}>
-  	  stock<input type="text"  value={this.state.stockName}
-          onChange={this.handleNameChange}/>
-  	  <input type="submit" name = "submit" value="submit"/>
+  	  <input type="text"  value={this.state.stockName}
+          onChange={this.handleNameChange} placeholder = "Enter a NYSE, e.g., AAPL "/>
+  	  <input type="submit" name = "submit" value="Add"/>
   	  </form>
    
 	 </div>
@@ -99,12 +102,13 @@ var StockResult = React.createClass({
   render: function() {
 
     // var stockNodes = _.map(sInfo,sInfo=><Stock stockDate={sInfo.stockDate} key={sInfo.id}> {sInfo.stockName}</Stock>)
-
+    let remove_stock = this.props.remove_stock;
     var stockNodes = this.props.data.map(function(sInfo,index) {
       return (
         <Stock 
         stockInfo = {sInfo}
         key = {index}
+        remove_stock = {remove_stock}
         >
         </Stock>
         );
@@ -120,7 +124,10 @@ var StockResult = React.createClass({
 
 
 var Stock = React.createClass({
-
+  handleSubmit(event){
+    event.preventDefault();
+    this.props.remove_stock(this.props.stockInfo[0].stockName);
+  },
   render: function() {
     // console.log(this.props.stockInfo);
     var width = 900,
@@ -205,9 +212,13 @@ var Stock = React.createClass({
     console.log(low);
     return (
       <div className="stock">
-        <br/>    
-        <h2> {title}</h2>
-      <LineTooltip
+        <br/>  
+        <form onSubmit = {this.handleSubmit}>  
+        <em>{title}</em>
+         <input type="submit" name = "remove" value="Remove"/>
+         </form> 
+         <br/>
+         <LineTooltip
            data= {this.props.stockInfo}
            width= {width}
            height= {height}

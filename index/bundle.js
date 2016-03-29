@@ -80,6 +80,14 @@
 	  // GE
 	  // GS
 	  // HD
+	  remove_stock: function remove_stock(stockName) {
+	    _lodash2.default.remove(this.state.data, function (item) {
+	      return item[0].stockName === stockName;
+	    });
+	    this.setState({
+	      data: this.state.data
+	    });
+	  },
 
 	  handleStockSubmit: function handleStockSubmit(stock) {
 	    $.ajax({
@@ -107,13 +115,14 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'stockBox' },
+	      React.createElement('br', null),
 	      React.createElement(
 	        'h2',
 	        null,
-	        'Choose stocks and see the results.'
+	        'Choose Stocks'
 	      ),
 	      React.createElement(StockForm, { onStockSubmit: this.handleStockSubmit }),
-	      React.createElement(StockResult, { data: this.state.data })
+	      React.createElement(StockResult, { remove_stock: this.remove_stock, data: this.state.data })
 	    );
 	  }
 	});
@@ -130,9 +139,6 @@
 	  handleSubmit: function handleSubmit(e) {
 	    e.preventDefault();
 	    var sName = this.state.stockName.trim();
-	    // if (!sDate|| !sName) {
-	    //   return;
-	    // }
 	    this.props.onStockSubmit({ stockName: sName });
 	    this.setState({ stockName: '' });
 	  },
@@ -140,14 +146,13 @@
 	  render: function render() {
 	    return React.createElement(
 	      'div',
-	      { className: 'stockForm' },
+	      { id: 'stockForm' },
 	      React.createElement(
 	        'form',
 	        { onSubmit: this.handleSubmit },
-	        'stock',
 	        React.createElement('input', { type: 'text', value: this.state.stockName,
-	          onChange: this.handleNameChange }),
-	        React.createElement('input', { type: 'submit', name: 'submit', value: 'submit' })
+	          onChange: this.handleNameChange, placeholder: 'Enter a NYSE, e.g., AAPL ' }),
+	        React.createElement('input', { type: 'submit', name: 'submit', value: 'Add' })
 	      )
 	    );
 	  }
@@ -160,11 +165,12 @@
 	  render: function render() {
 
 	    // var stockNodes = _.map(sInfo,sInfo=><Stock stockDate={sInfo.stockDate} key={sInfo.id}> {sInfo.stockName}</Stock>)
-
+	    var remove_stock = this.props.remove_stock;
 	    var stockNodes = this.props.data.map(function (sInfo, index) {
 	      return React.createElement(Stock, {
 	        stockInfo: sInfo,
-	        key: index
+	        key: index,
+	        remove_stock: remove_stock
 	      });
 	    });
 
@@ -178,7 +184,10 @@
 
 	var Stock = React.createClass({
 	  displayName: 'Stock',
-
+	  handleSubmit: function handleSubmit(event) {
+	    event.preventDefault();
+	    this.props.remove_stock(this.props.stockInfo[0].stockName);
+	  },
 
 	  render: function render() {
 	    // console.log(this.props.stockInfo);
@@ -261,11 +270,16 @@
 	      { className: 'stock' },
 	      React.createElement('br', null),
 	      React.createElement(
-	        'h2',
-	        null,
-	        ' ',
-	        title
+	        'form',
+	        { onSubmit: this.handleSubmit },
+	        React.createElement(
+	          'em',
+	          null,
+	          title
+	        ),
+	        React.createElement('input', { type: 'submit', name: 'remove', value: 'Remove' })
 	      ),
+	      React.createElement('br', null),
 	      React.createElement(LineTooltip, {
 	        data: this.props.stockInfo,
 	        width: width,
