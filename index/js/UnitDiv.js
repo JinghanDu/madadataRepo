@@ -4,30 +4,28 @@ var ReactDOM = require('react-dom');
 var Chart = require('react-d3-core').Chart;
 var LineChart = require('react-d3-basic').LineChart;
 var LineTooltip = require('react-d3-tooltip').LineTooltip;
-var LineZoom = require('react-d3-zoom').LineZoom;
+var BarTooltip = require('react-d3-tooltip').BarTooltip;
 var d3 = require("d3");
 import _ from 'lodash';
 var StockBox = React.createClass({
   getInitialState: function() {
     return {data: []};
   },
-  // loadStocksFromServer: function() {
-  //       $.ajax({
-  //       url: this.props.url,
-  //       dataType: 'json',
-  //       cache: false,
-  //       success: function(data) {
-  //        this.setState({data: data});
-  //      }.bind(this),
-  //       error: function(xhr, status, err) {
-  //        console.error(this.props.url, status, err.toString());
-  //       }.bind(this)
-  //     });
-  //   },
-  // componentDidMount: function() {
-  //   this.loadStocksFromServer();
-  //   //setInterval(this.loadStocksFromServer, this.props.pollInterval);
-  // },
+//   // AAPL
+// stockName
+// MMM
+// AXP
+// BA
+// CAT
+// CVX
+// CSCO
+// KO
+// DD
+// XOM
+// GE
+// GS
+// HD
+
   handleStockSubmit: function(stock) {
     $.ajax({
       url: "http://localhost:8000/",
@@ -55,7 +53,7 @@ var StockBox = React.createClass({
   render: function() {
     return (
       <div className="stockBox">
-       <h3>Choose stocks and see the results.</h3>
+       <h2>Choose stocks and see the results.</h2>
         <StockForm onStockSubmit={this.handleStockSubmit}/>
         <StockResult data={this.state.data} /> 
       </div>
@@ -125,39 +123,57 @@ var Stock = React.createClass({
 
   render: function() {
     // console.log(this.props.stockInfo);
-    var width = 800,
-    height = 300,
+    var width = 900,
+    height = 500,
     margins = {left: 100, right: 100, top: 50, bottom: 50},
     low = [],
     high = [],
     vo = [],
     x = function(d) {
-      var parseDate = d3.time.format("%Y-%m-%d").parse;
-      return parseDate(d.Date);
-      // return new Date(d.Date);
+      return new Date(d.Date);
     },
     title = this.props.stockInfo[0].stockName,
     xScale = 'time',
     chartSeries = [
       {
+        style: {
+          "strokeWidth": 2,
+          "strokeOpacity": 1
+        },
         field: 'Close',
         name: 'Close'
        },
       {
+        style: {
+        "strokeWidth": 2,
+        "strokeOpacity": 1
+        },
         field: 'Open',
         name: 'Open'
       },
      {
+        style: {
+          "strokeWidth": 2,
+          "strokeOpacity": 1
+        },
         field: 'Low',
         name: 'Low'
       },
     {
+        style: {
+          "strokeWidth": 2,
+          "strokeOpacity": 1
+        },
         field: 'High',
         name: 'High'
       }
     ],
     chartSeriesV = [
       {
+        style: {
+          "strokeWidth": 2,
+          "strokeOpacity": 1
+        },
         field: 'Volume',
         name: 'Volume'
       }
@@ -181,7 +197,7 @@ var Stock = React.createClass({
     y = function(d) {
       return +d;
     },
-
+    xTickFormat = d3.time.format("%m"),
     // find max and min
     yDomain = [lowMin, highMax],
     yDomainV = [voMin, voMax],
@@ -202,6 +218,7 @@ var Stock = React.createClass({
            y= {y}
            yDomain= {yDomain}
            yScale = {yScale}
+           xTickFormat = {xTickFormat}
          />
        <LineTooltip
         data= {this.props.stockInfo}
@@ -214,6 +231,7 @@ var Stock = React.createClass({
         y= {y}
         yDomain= {yDomainV}
         yScale = {yScale}
+        xTickFormat = {xTickFormat}
       />
 
       </div>

@@ -15,14 +15,18 @@ header {
 }
 h1{
 	margin-left: 10%;
+	text-align: center;
 }
 #stock{
 	margin-left: auto;
 	margin-right: auto;
 }
 #main {
-	width:800px;
-	margin-left:16%;
-	background-color:rgba(161, 154, 154,0.5); 
+	width:950px;
+	margin-left:auto;
+	margin-right: auto;
+	background-color:rgba(189, 198, 201,0.8); 
 	color: black;
+	text-align: center;
+	margin-bottom: 100px;
 }

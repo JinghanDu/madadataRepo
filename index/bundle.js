@@ -57,7 +57,7 @@
 	var Chart = __webpack_require__(161).Chart;
 	var LineChart = __webpack_require__(201).LineChart;
 	var LineTooltip = __webpack_require__(233).LineTooltip;
-	var LineZoom = __webpack_require__(257).LineZoom;
+	var BarTooltip = __webpack_require__(233).BarTooltip;
 	var d3 = __webpack_require__(205);
 
 	var StockBox = React.createClass({
@@ -66,23 +66,21 @@
 	  getInitialState: function getInitialState() {
 	    return { data: [] };
 	  },
-	  // loadStocksFromServer: function() {
-	  //       $.ajax({
-	  //       url: this.props.url,
-	  //       dataType: 'json',
-	  //       cache: false,
-	  //       success: function(data) {
-	  //        this.setState({data: data});
-	  //      }.bind(this),
-	  //       error: function(xhr, status, err) {
-	  //        console.error(this.props.url, status, err.toString());
-	  //       }.bind(this)
-	  //     });
-	  //   },
-	  // componentDidMount: function() {
-	  //   this.loadStocksFromServer();
-	  //   //setInterval(this.loadStocksFromServer, this.props.pollInterval);
-	  // },
+	  //   // AAPL
+	  // stockName
+	  // MMM
+	  // AXP
+	  // BA
+	  // CAT
+	  // CVX
+	  // CSCO
+	  // KO
+	  // DD
+	  // XOM
+	  // GE
+	  // GS
+	  // HD
+
 	  handleStockSubmit: function handleStockSubmit(stock) {
 	    $.ajax({
 	      url: "http://localhost:8000/",
@@ -110,7 +108,7 @@
 	      'div',
 	      { className: 'stockBox' },
 	      React.createElement(
-	        'h3',
+	        'h2',
 	        null,
 	        'Choose stocks and see the results.'
 	      ),
@@ -184,33 +182,51 @@
 
 	  render: function render() {
 	    // console.log(this.props.stockInfo);
-	    var width = 800,
-	        height = 300,
+	    var width = 900,
+	        height = 500,
 	        margins = { left: 100, right: 100, top: 50, bottom: 50 },
 	        low = [],
 	        high = [],
 	        vo = [],
 	        x = function x(d) {
-	      var parseDate = d3.time.format("%Y-%m-%d").parse;
-	      return parseDate(d.Date);
-	      // return new Date(d.Date);
+	      return new Date(d.Date);
 	    },
 	        title = this.props.stockInfo[0].stockName,
 	        xScale = 'time',
 	        chartSeries = [{
+	      style: {
+	        "strokeWidth": 2,
+	        "strokeOpacity": 1
+	      },
 	      field: 'Close',
 	      name: 'Close'
 	    }, {
+	      style: {
+	        "strokeWidth": 2,
+	        "strokeOpacity": 1
+	      },
 	      field: 'Open',
 	      name: 'Open'
 	    }, {
+	      style: {
+	        "strokeWidth": 2,
+	        "strokeOpacity": 1
+	      },
 	      field: 'Low',
 	      name: 'Low'
 	    }, {
+	      style: {
+	        "strokeWidth": 2,
+	        "strokeOpacity": 1
+	      },
 	      field: 'High',
 	      name: 'High'
 	    }],
 	        chartSeriesV = [{
+	      style: {
+	        "strokeWidth": 2,
+	        "strokeOpacity": 1
+	      },
 	      field: 'Volume',
 	      name: 'Volume'
 	    }];
@@ -233,7 +249,7 @@
 	        y = function y(d) {
 	      return +d;
 	    },
-
+	        xTickFormat = d3.time.format("%m"),
 
 	    // find max and min
 	    yDomain = [lowMin, highMax],
@@ -260,7 +276,8 @@
 	        xScale: xScale,
 	        y: y,
 	        yDomain: yDomain,
-	        yScale: yScale
+	        yScale: yScale,
+	        xTickFormat: xTickFormat
 	      }),
 	      React.createElement(LineTooltip, {
 	        data: this.props.stockInfo,
@@ -272,7 +289,8 @@
 	        xScale: xScale,
 	        y: y,
 	        yDomain: yDomainV,
-	        yScale: yScale
+	        yScale: yScale,
+	        xTickFormat: xTickFormat
 	      })
 	    );
 	  }
@@ -63711,1005 +63729,6 @@
 	  value: _react2.default.PropTypes.any
 	};
 	exports.default = SimpleTooltipStyle;
-	module.exports = exports['default'];
-
-/***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _line = __webpack_require__(258);
-
-	var _line2 = _interopRequireDefault(_line);
-
-	var _area_stack = __webpack_require__(262);
-
-	var _area_stack2 = _interopRequireDefault(_area_stack);
-
-	var _scatter = __webpack_require__(263);
-
-	var _scatter2 = _interopRequireDefault(_scatter);
-
-	var _bar = __webpack_require__(264);
-
-	var _bar2 = _interopRequireDefault(_bar);
-
-	var _bar_stack = __webpack_require__(265);
-
-	var _bar_stack2 = _interopRequireDefault(_bar_stack);
-
-	var _bar_group = __webpack_require__(266);
-
-	var _bar_group2 = _interopRequireDefault(_bar_group);
-
-	// inherit
-
-	var _inheritIndex = __webpack_require__(259);
-
-	var _inheritIndex2 = _interopRequireDefault(_inheritIndex);
-
-	// utils
-
-	var _utilsZoom_focus = __webpack_require__(260);
-
-	var _utilsZoom_focus2 = _interopRequireDefault(_utilsZoom_focus);
-
-	exports.LineZoom = _line2['default'];
-	exports.ScatterZoom = _scatter2['default'];
-	exports.AreaStackZoom = _area_stack2['default'];
-	exports.BarZoom = _bar2['default'];
-	exports.BarStackZoom = _bar_stack2['default'];
-	exports.BarGroupZoom = _bar_group2['default'];
-	exports.ZoomSet = _inheritIndex2['default'];
-	exports.ZoomFocus = _utilsZoom_focus2['default'];
-
-/***/ },
-/* 258 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(3);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactD3Core = __webpack_require__(161);
-
-	var _reactD3Basic = __webpack_require__(201);
-
-	var _inheritIndex = __webpack_require__(259);
-
-	var _inheritIndex2 = _interopRequireDefault(_inheritIndex);
-
-	var _utilsZoom_focus = __webpack_require__(260);
-
-	var _utilsZoom_focus2 = _interopRequireDefault(_utilsZoom_focus);
-
-	var _commonProps = __webpack_require__(261);
-
-	var _commonProps2 = _interopRequireDefault(_commonProps);
-
-	var LineZoom = (function (_ZoomSet) {
-	  _inherits(LineZoom, _ZoomSet);
-
-	  function LineZoom(props) {
-	    _classCallCheck(this, LineZoom);
-
-	    _get(Object.getPrototypeOf(LineZoom.prototype), 'constructor', this).call(this, props);
-
-	    var _props = this.props;
-	    var margins = _props.margins;
-	    var width = _props.width;
-	    var height = _props.height;
-
-	    this.zoomed = this.zoomed.bind(this);
-	    this.mkXDomain();
-	    this.mkYDomain();
-
-	    this.state = {
-	      xDomainSet: this.setXDomain,
-	      yDomainSet: this.setYDomain,
-	      onZoom: this.zoomed,
-	      d3EventSet: null,
-	      xRange: this.props.xRange || [0, width - margins.left - margins.right],
-	      yRange: this.props.yRange || [height - margins.top - margins.bottom, 0],
-	      xRangeRoundBands: this.props.xRangeRoundBands || { interval: [0, width - margins.left - margins.right], padding: .1 },
-	      zoomType: 'line'
-	    };
-
-	    this.mkXScale(this.setXDomain);
-	    this.mkYScale(this.setYDomain);
-
-	    this.state = Object.assign(this.state, {
-	      xScaleSet: this.setXScale,
-	      yScaleSet: this.setYScale
-	    });
-	  }
-
-	  _createClass(LineZoom, [{
-	    key: 'render',
-	    value: function render() {
-	      var _state = this.state;
-	      var xDomainSet = _state.xDomainSet;
-	      var yDomainSet = _state.yDomainSet;
-
-	      var focus = _react2['default'].createElement(_utilsZoom_focus2['default'], this.props);
-
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(
-	          _reactD3Core.Chart,
-	          _extends({}, this.props, this.state),
-	          _react2['default'].createElement(_reactD3Basic.LineChart, _extends({}, this.props, this.state, { xDomain: xDomainSet, yDomain: yDomainSet, showZoom: true })),
-	          focus
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'defaultProps',
-	    value: _commonProps2['default'],
-	    enumerable: true
-	  }]);
-
-	  return LineZoom;
-	})(_inheritIndex2['default']);
-
-	exports['default'] = LineZoom;
-	module.exports = exports['default'];
-
-/***/ },
-/* 259 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(3);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _d3 = __webpack_require__(205);
-
-	var _d32 = _interopRequireDefault(_d3);
-
-	var _reactD3Core = __webpack_require__(161);
-
-	"use sctrict";
-
-	var Zoom = (function (_Component) {
-	  _inherits(Zoom, _Component);
-
-	  function Zoom(props) {
-	    _classCallCheck(this, Zoom);
-
-	    _get(Object.getPrototypeOf(Zoom.prototype), 'constructor', this).call(this, props);
-	  }
-
-	  _createClass(Zoom, [{
-	    key: 'mkXDomain',
-	    value: function mkXDomain() {
-	      return this.setXDomain = (0, _reactD3Core.xDomainCount)(this.props);
-	    }
-	  }, {
-	    key: 'mkYDomain',
-	    value: function mkYDomain(stack) {
-	      return this.setYDomain = (0, _reactD3Core.yDomainCount)(this.props, stack);
-	    }
-	  }, {
-	    key: 'mkXScale',
-	    value: function mkXScale(xDomain) {
-	      var _props = this.props;
-	      var data = _props.data;
-	      var xScale = _props.xScale;
-	      var _state = this.state;
-	      var xRange = _state.xRange;
-	      var xRangeRoundBands = _state.xRangeRoundBands;
-
-	      var newXScale = {
-	        scale: xScale,
-	        range: xRange,
-	        domain: xDomain,
-	        rangeRoundBands: xRangeRoundBands
-	      };
-
-	      var newScale = (0, _reactD3Core.scale)(newXScale);
-
-	      return this.setXScale = newScale;
-	    }
-	  }, {
-	    key: 'mkYScale',
-	    value: function mkYScale(yDomain) {
-	      var _props2 = this.props;
-	      var data = _props2.data;
-	      var yScale = _props2.yScale;
-	      var _state2 = this.state;
-	      var yRange = _state2.yRange;
-	      var yRangeRoundBands = _state2.yRangeRoundBands;
-
-	      var newYScale = {
-	        scale: yScale,
-	        range: yRange,
-	        domain: yDomain,
-	        rangeRoundBands: yRangeRoundBands
-	      };
-
-	      var newScale = (0, _reactD3Core.scale)(newYScale);
-
-	      return this.setYScale = newScale;
-	    }
-	  }, {
-	    key: 'zoomed',
-	    value: function zoomed(xScale, yScale, zoom) {
-	      var _state3 = this.state;
-	      var zoomType = _state3.zoomType;
-	      var xScaleSet = _state3.xScaleSet;
-	      var yScaleSet = _state3.yScaleSet;
-	      var yDomainSet = _state3.yDomainSet;
-	      var xDomainSet = _state3.xDomainSet;
-	      var _props3 = this.props;
-	      var zoomX = _props3.zoomX;
-	      var zoomY = _props3.zoomY;
-
-	      var evt = _d32['default'].event;
-	      var zoomXDomain = xScale.domain();
-	      var zoomYDomain = yScale.domain();
-
-	      if (xScale.domain()[0] < this.setXDomain[0]) {
-	        zoomXDomain = xDomainSet;
-	        zoom.translate([zoom.translate()[0] - xScale(this.setXDomain[0]) + xScale.range()[0], zoom.translate()[1]]);
-	      } else if (xScale.domain()[1] > this.setXDomain[1]) {
-	        zoomXDomain = xDomainSet;
-	        zoom.translate([zoom.translate()[0] - xScale(this.setXDomain[1]) + xScale.range()[1], zoom.translate()[1]]);
-	      }
-
-	      if (yScale.domain()[0] < this.setYDomain[0]) {
-	        zoomYDomain = yDomainSet;
-	        zoom.translate([zoom.translate()[0], zoom.translate()[1] - yScale(this.setYDomain[0]) + yScale.range()[0]]);
-	      } else if (yScale.domain()[1] > this.setYDomain[1]) {
-	        zoomYDomain = yDomainSet;
-	        zoom.translate([zoom.translate()[0], zoom.translate()[1] - yScale(this.setYDomain[1]) + yScale.range()[1]]);
-	      }
-
-	      if (zoomType === 'line' || zoomType === 'scatter' || zoomType === 'area_stack') {
-
-	        this.setState({
-	          d3EventSet: evt,
-	          xDomainSet: zoomX ? zoomXDomain : this.setXDomain,
-	          yDomainSet: zoomY ? zoomYDomain : this.setYDomain
-	        });
-	      } else if (zoomType === 'bar' || zoomType === 'bar_group' || zoomType === 'bar_stack') {
-
-	        var newDomain = xScale.domain();
-	        var selected = xScaleSet.domain().filter(function (d) {
-	          var filterDomain = newDomain[0] <= xScaleSet(d) && xScaleSet(d) <= newDomain[1];
-	          return filterDomain;
-	        });
-
-	        if (selected.length === 0) selected = xDomainSet;
-
-	        this.setState({
-	          d3EventSet: evt,
-	          xDomainSet: zoomX ? selected : this.setXDomain,
-	          yDomainSet: zoomY ? zoomYDomain : this.setYDomain
-	        });
-	      }
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      data: _react.PropTypes.array.isRequired,
-	      chartSeries: _react.PropTypes.array.isRequired,
-	      width: _react.PropTypes.number,
-	      height: _react.PropTypes.number,
-	      x: _react.PropTypes.func,
-	      xDomain: _react.PropTypes.array,
-	      xRange: _react.PropTypes.array,
-	      xScale: _react.PropTypes.string,
-	      xRangeRoundBands: _react.PropTypes.object,
-	      y: _react.PropTypes.func,
-	      yDomain: _react.PropTypes.array,
-	      yRange: _react.PropTypes.array,
-	      yScale: _react.PropTypes.string,
-	      zoomX: _react.PropTypes.bool,
-	      zoomY: _react.PropTypes.bool
-	    },
-	    enumerable: true
-	  }]);
-
-	  return Zoom;
-	})(_react.Component);
-
-	exports['default'] = Zoom;
-	module.exports = exports['default'];
-
-/***/ },
-/* 260 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(3);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var ZoomFocus = (function (_Component) {
-	  _inherits(ZoomFocus, _Component);
-
-	  function ZoomFocus(props) {
-	    _classCallCheck(this, ZoomFocus);
-
-	    _get(Object.getPrototypeOf(ZoomFocus.prototype), "constructor", this).call(this, props);
-	  }
-
-	  _createClass(ZoomFocus, [{
-	    key: "render",
-	    value: function render() {
-	      var _props = this.props;
-	      var height = _props.height;
-	      var width = _props.width;
-	      var margins = _props.margins;
-	      var chartId = _props.chartId;
-
-	      var id = "react-d3-basic__zoom_focus__clip__" + chartId;
-
-	      return _react2["default"].createElement(
-	        "defs",
-	        null,
-	        _react2["default"].createElement(
-	          "clipPath",
-	          { id: id },
-	          _react2["default"].createElement("rect", {
-	            width: width - margins.left - margins.right,
-	            height: height - margins.top - margins.bottom
-	          })
-	        )
-	      );
-	    }
-	  }], [{
-	    key: "defaultProps",
-	    value: {
-	      chartId: 0
-	    },
-	    enumerable: true
-	  }]);
-
-	  return ZoomFocus;
-	})(_react.Component);
-
-	exports["default"] = ZoomFocus;
-	module.exports = exports["default"];
-
-/***/ },
-/* 261 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	var width = 960;
-	var height = 500;
-	var margins = { top: 80, right: 100, bottom: 80, left: 100 };
-
-	exports['default'] = {
-	  width: width,
-	  height: height,
-	  margins: margins,
-	  y: function y(d) {
-	    return +d;
-	  },
-	  xScale: 'linear',
-	  yScale: 'linear',
-	  zoomY: false,
-	  zoomX: true
-	};
-	module.exports = exports['default'];
-
-/***/ },
-/* 262 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(3);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactD3Core = __webpack_require__(161);
-
-	var _reactD3Basic = __webpack_require__(201);
-
-	var _inheritIndex = __webpack_require__(259);
-
-	var _inheritIndex2 = _interopRequireDefault(_inheritIndex);
-
-	var _utilsZoom_focus = __webpack_require__(260);
-
-	var _utilsZoom_focus2 = _interopRequireDefault(_utilsZoom_focus);
-
-	var _commonProps = __webpack_require__(261);
-
-	var _commonProps2 = _interopRequireDefault(_commonProps);
-
-	var AreaStackZoom = (function (_ZoomSet) {
-	  _inherits(AreaStackZoom, _ZoomSet);
-
-	  function AreaStackZoom(props) {
-	    _classCallCheck(this, AreaStackZoom);
-
-	    _get(Object.getPrototypeOf(AreaStackZoom.prototype), 'constructor', this).call(this, props);
-
-	    var _props = this.props;
-	    var margins = _props.margins;
-	    var width = _props.width;
-	    var height = _props.height;
-
-	    this.zoomed = this.zoomed.bind(this);
-	    this.mkXDomain();
-	    this.mkYDomain(true);
-
-	    this.state = {
-	      xDomainSet: this.setXDomain,
-	      yDomainSet: this.setYDomain,
-	      onZoom: this.zoomed,
-	      d3EventSet: null,
-	      xRange: this.props.xRange || [0, width - margins.left - margins.right],
-	      yRange: this.props.yRange || [height - margins.top - margins.bottom, 0],
-	      xRangeRoundBands: this.props.xRangeRoundBands || { interval: [0, width - margins.left - margins.right], padding: .1 },
-	      zoomType: 'area_stack'
-	    };
-
-	    this.mkXScale(this.setXDomain);
-	    this.mkYScale(this.setYDomain);
-
-	    this.state = Object.assign(this.state, {
-	      xScaleSet: this.setXScale,
-	      yScaleSet: this.setYScale
-	    });
-	  }
-
-	  _createClass(AreaStackZoom, [{
-	    key: 'render',
-	    value: function render() {
-	      var _state = this.state;
-	      var xDomainSet = _state.xDomainSet;
-	      var yDomainSet = _state.yDomainSet;
-
-	      var focus = _react2['default'].createElement(_utilsZoom_focus2['default'], this.props);
-
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(
-	          _reactD3Core.Chart,
-	          _extends({}, this.props, this.state),
-	          _react2['default'].createElement(_reactD3Basic.AreaStackChart, _extends({}, this.props, this.state, { xDomain: xDomainSet, yDomain: yDomainSet, showZoom: true })),
-	          focus
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'defaultProps',
-	    value: _commonProps2['default'],
-	    enumerable: true
-	  }]);
-
-	  return AreaStackZoom;
-	})(_inheritIndex2['default']);
-
-	exports['default'] = AreaStackZoom;
-	module.exports = exports['default'];
-
-/***/ },
-/* 263 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(3);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactD3Core = __webpack_require__(161);
-
-	var _reactD3Basic = __webpack_require__(201);
-
-	var _inheritIndex = __webpack_require__(259);
-
-	var _inheritIndex2 = _interopRequireDefault(_inheritIndex);
-
-	var _utilsZoom_focus = __webpack_require__(260);
-
-	var _utilsZoom_focus2 = _interopRequireDefault(_utilsZoom_focus);
-
-	var _commonProps = __webpack_require__(261);
-
-	var _commonProps2 = _interopRequireDefault(_commonProps);
-
-	var ScatterZoom = (function (_ZoomSet) {
-	  _inherits(ScatterZoom, _ZoomSet);
-
-	  function ScatterZoom(props) {
-	    _classCallCheck(this, ScatterZoom);
-
-	    _get(Object.getPrototypeOf(ScatterZoom.prototype), 'constructor', this).call(this, props);
-
-	    var _props = this.props;
-	    var margins = _props.margins;
-	    var width = _props.width;
-	    var height = _props.height;
-
-	    this.zoomed = this.zoomed.bind(this);
-	    this.mkXDomain();
-	    this.mkYDomain();
-
-	    this.state = {
-	      xDomainSet: this.setXDomain,
-	      yDomainSet: this.setYDomain,
-	      onZoom: this.zoomed,
-	      d3EventSet: null,
-	      xRange: this.props.xRange || [0, width - margins.left - margins.right],
-	      yRange: this.props.yRange || [height - margins.top - margins.bottom, 0],
-	      xRangeRoundBands: this.props.xRangeRoundBands || { interval: [0, width - margins.left - margins.right], padding: .1 },
-	      zoomType: 'scatter'
-	    };
-
-	    this.mkXScale(this.setXDomain);
-	    this.mkYScale(this.setYDomain);
-
-	    this.state = Object.assign(this.state, {
-	      xScaleSet: this.setXScale,
-	      yScaleSet: this.setYScale
-	    });
-	  }
-
-	  _createClass(ScatterZoom, [{
-	    key: 'render',
-	    value: function render() {
-	      var _state = this.state;
-	      var xDomainSet = _state.xDomainSet;
-	      var yDomainSet = _state.yDomainSet;
-
-	      var focus = _react2['default'].createElement(_utilsZoom_focus2['default'], this.props);
-
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(
-	          _reactD3Core.Chart,
-	          _extends({}, this.props, this.state),
-	          _react2['default'].createElement(_reactD3Basic.ScatterPlot, _extends({}, this.props, this.state, { xDomain: xDomainSet, yDomain: yDomainSet, showZoom: true })),
-	          focus
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'defaultProps',
-	    value: _commonProps2['default'],
-	    enumerable: true
-	  }]);
-
-	  return ScatterZoom;
-	})(_inheritIndex2['default']);
-
-	exports['default'] = ScatterZoom;
-	module.exports = exports['default'];
-
-/***/ },
-/* 264 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(3);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactD3Core = __webpack_require__(161);
-
-	var _reactD3Basic = __webpack_require__(201);
-
-	var _inheritIndex = __webpack_require__(259);
-
-	var _inheritIndex2 = _interopRequireDefault(_inheritIndex);
-
-	var _utilsZoom_focus = __webpack_require__(260);
-
-	var _utilsZoom_focus2 = _interopRequireDefault(_utilsZoom_focus);
-
-	var _commonProps = __webpack_require__(261);
-
-	var _commonProps2 = _interopRequireDefault(_commonProps);
-
-	var BarZoom = (function (_ZoomSet) {
-	  _inherits(BarZoom, _ZoomSet);
-
-	  function BarZoom(props) {
-	    _classCallCheck(this, BarZoom);
-
-	    _get(Object.getPrototypeOf(BarZoom.prototype), 'constructor', this).call(this, props);
-
-	    var _props = this.props;
-	    var margins = _props.margins;
-	    var width = _props.width;
-	    var height = _props.height;
-
-	    this.zoomed = this.zoomed.bind(this);
-	    this.mkXDomain();
-	    this.mkYDomain();
-
-	    this.state = {
-	      xDomainSet: this.setXDomain,
-	      yDomainSet: this.setYDomain,
-	      onZoom: this.zoomed,
-	      d3EventSet: null,
-	      xRange: this.props.xRange || [0, width - margins.left - margins.right],
-	      yRange: this.props.yRange || [height - margins.top - margins.bottom, 0],
-	      xRangeRoundBands: this.props.xRangeRoundBands || { interval: [0, width - margins.left - margins.right], padding: .1 },
-	      zoomType: 'bar'
-	    };
-
-	    this.mkXScale(this.setXDomain);
-	    this.mkYScale(this.setYDomain);
-
-	    this.state = Object.assign(this.state, {
-	      xScaleSet: this.setXScale,
-	      yScaleSet: this.setYScale
-	    });
-	  }
-
-	  _createClass(BarZoom, [{
-	    key: 'render',
-	    value: function render() {
-	      var _state = this.state;
-	      var xDomainSet = _state.xDomainSet;
-	      var yDomainSet = _state.yDomainSet;
-
-	      var focus = _react2['default'].createElement(_utilsZoom_focus2['default'], this.props);
-
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(
-	          _reactD3Core.Chart,
-	          _extends({}, this.props, this.state),
-	          _react2['default'].createElement(_reactD3Basic.BarChart, _extends({}, this.props, this.state, { xDomain: xDomainSet, yDomain: yDomainSet, showZoom: true })),
-	          focus
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'defaultProps',
-	    value: _commonProps2['default'],
-	    enumerable: true
-	  }]);
-
-	  return BarZoom;
-	})(_inheritIndex2['default']);
-
-	exports['default'] = BarZoom;
-	module.exports = exports['default'];
-
-/***/ },
-/* 265 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(3);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactD3Core = __webpack_require__(161);
-
-	var _reactD3Basic = __webpack_require__(201);
-
-	var _inheritIndex = __webpack_require__(259);
-
-	var _inheritIndex2 = _interopRequireDefault(_inheritIndex);
-
-	var _utilsZoom_focus = __webpack_require__(260);
-
-	var _utilsZoom_focus2 = _interopRequireDefault(_utilsZoom_focus);
-
-	var _commonProps = __webpack_require__(261);
-
-	var _commonProps2 = _interopRequireDefault(_commonProps);
-
-	var BarStackZoom = (function (_ZoomSet) {
-	  _inherits(BarStackZoom, _ZoomSet);
-
-	  function BarStackZoom(props) {
-	    _classCallCheck(this, BarStackZoom);
-
-	    _get(Object.getPrototypeOf(BarStackZoom.prototype), 'constructor', this).call(this, props);
-
-	    var _props = this.props;
-	    var margins = _props.margins;
-	    var width = _props.width;
-	    var height = _props.height;
-
-	    this.zoomed = this.zoomed.bind(this);
-	    this.mkXDomain();
-	    this.mkYDomain(true);
-
-	    this.state = {
-	      xDomainSet: this.setXDomain,
-	      yDomainSet: this.setYDomain,
-	      onZoom: this.zoomed,
-	      d3EventSet: null,
-	      xRange: this.props.xRange || [0, width - margins.left - margins.right],
-	      yRange: this.props.yRange || [height - margins.top - margins.bottom, 0],
-	      xRangeRoundBands: this.props.xRangeRoundBands || { interval: [0, width - margins.left - margins.right], padding: .1 },
-	      zoomType: 'bar_stack'
-	    };
-
-	    this.mkXScale(this.setXDomain);
-	    this.mkYScale(this.setYDomain);
-
-	    this.state = Object.assign(this.state, {
-	      xScaleSet: this.setXScale,
-	      yScaleSet: this.setYScale
-	    });
-	  }
-
-	  _createClass(BarStackZoom, [{
-	    key: 'render',
-	    value: function render() {
-	      var _state = this.state;
-	      var xDomainSet = _state.xDomainSet;
-	      var yDomainSet = _state.yDomainSet;
-
-	      var focus = _react2['default'].createElement(_utilsZoom_focus2['default'], this.props);
-
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(
-	          _reactD3Core.Chart,
-	          _extends({}, this.props, this.state),
-	          _react2['default'].createElement(_reactD3Basic.BarStackChart, _extends({}, this.props, this.state, { xDomain: xDomainSet, yDomain: yDomainSet, showZoom: true })),
-	          focus
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'defaultProps',
-	    value: _commonProps2['default'],
-	    enumerable: true
-	  }]);
-
-	  return BarStackZoom;
-	})(_inheritIndex2['default']);
-
-	exports['default'] = BarStackZoom;
-	module.exports = exports['default'];
-
-/***/ },
-/* 266 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _react = __webpack_require__(3);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactD3Core = __webpack_require__(161);
-
-	var _reactD3Basic = __webpack_require__(201);
-
-	var _inheritIndex = __webpack_require__(259);
-
-	var _inheritIndex2 = _interopRequireDefault(_inheritIndex);
-
-	var _utilsZoom_focus = __webpack_require__(260);
-
-	var _utilsZoom_focus2 = _interopRequireDefault(_utilsZoom_focus);
-
-	var _commonProps = __webpack_require__(261);
-
-	var _commonProps2 = _interopRequireDefault(_commonProps);
-
-	var BarGroupZoom = (function (_ZoomSet) {
-	  _inherits(BarGroupZoom, _ZoomSet);
-
-	  function BarGroupZoom(props) {
-	    _classCallCheck(this, BarGroupZoom);
-
-	    _get(Object.getPrototypeOf(BarGroupZoom.prototype), 'constructor', this).call(this, props);
-
-	    var _props = this.props;
-	    var margins = _props.margins;
-	    var width = _props.width;
-	    var height = _props.height;
-
-	    this.zoomed = this.zoomed.bind(this);
-	    this.mkXDomain();
-	    this.mkYDomain();
-
-	    this.state = {
-	      xDomainSet: this.setXDomain,
-	      yDomainSet: this.setYDomain,
-	      onZoom: this.zoomed,
-	      d3EventSet: null,
-	      xRange: this.props.xRange || [0, width - margins.left - margins.right],
-	      yRange: this.props.yRange || [height - margins.top - margins.bottom, 0],
-	      xRangeRoundBands: this.props.xRangeRoundBands || { interval: [0, width - margins.left - margins.right], padding: .1 },
-	      zoomType: 'bar_group'
-	    };
-
-	    this.mkXScale(this.setXDomain);
-	    this.mkYScale(this.setYDomain);
-
-	    this.state = Object.assign(this.state, {
-	      xScaleSet: this.setXScale,
-	      yScaleSet: this.setYScale
-	    });
-	  }
-
-	  _createClass(BarGroupZoom, [{
-	    key: 'render',
-	    value: function render() {
-	      var _state = this.state;
-	      var xDomainSet = _state.xDomainSet;
-	      var yDomainSet = _state.yDomainSet;
-
-	      var focus = _react2['default'].createElement(_utilsZoom_focus2['default'], this.props);
-
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(
-	          _reactD3Core.Chart,
-	          _extends({}, this.props, this.state),
-	          _react2['default'].createElement(_reactD3Basic.BarGroupChart, _extends({}, this.props, this.state, { xDomain: xDomainSet, yDomain: yDomainSet, showZoom: true })),
-	          focus
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'defaultProps',
-	    value: _commonProps2['default'],
-	    enumerable: true
-	  }]);
-
-	  return BarGroupZoom;
-	})(_inheritIndex2['default']);
-
-	exports['default'] = BarGroupZoom;
 	module.exports = exports['default'];
 
 /***/ }
